@@ -68,9 +68,8 @@ const Main = (props) => {
           albumID: inputID,
           albumName: albumResponse.data.name,
           albumArt: albumResponse.data.images[1].url,
-          artists: `${albumResponse.data.artists.map((artist) => artist.name)}`,
-          releaseYear: parseInt(albumResponse.data.release_date.slice(0, 4)),
-          genres: `${albumResponse.data.genres.map((genre) => genre)}`
+          artists: albumResponse.data.artists.map((artist) => artist.name),
+          releaseYear: parseInt(albumResponse.data.release_date.slice(0, 4))
         });
       }).catch((error) => {
         console.log("Error retrieving album info from Spotify: " + error)
@@ -109,8 +108,7 @@ const Main = (props) => {
           albumName: albumResponse.data.album.albumName,
           albumArt: albumResponse.data.album.albumArt,
           artists: albumResponse.data.album.artists,
-          releaseYear: albumResponse.data.album.releaseYear,
-          genres: albumResponse.data.album.genres
+          releaseYear: albumResponse.data.album.releaseYear
         })
       }).catch((error) => {
       console.log("Error retrieving album data: " + error.message);
@@ -145,7 +143,7 @@ const Main = (props) => {
     // get all of the albums from the database to be shown in our Select component later.
     axios.get('http://localhost:5000/albums/all').then((response) => {
       response.data.map((album) => {
-        setAlbums((Albums) => [...Albums, { value: album.albumID, label: album.albumName, albumArt: album.albumArt, artists: album.artists, genres: album.genres, releaseYear: album.releaseYear }])
+        setAlbums((Albums) => [...Albums, { value: album.albumID, label: album.albumName, albumArt: album.albumArt, artists: album.artists, releaseYear: album.releaseYear }])
       })
       return { value: response.data.albumID, label: response.data.albumName}
     }).catch((error) => {
@@ -198,9 +196,8 @@ const Main = (props) => {
           <div className="albumInfo">
             <div className="infoRow"><div className="infoHeader">Album ID:</div><div>{addAlbum.albumID}</div></div>
             <div className="infoRow"><div className="infoHeader">Album Name:</div><div>{addAlbum.albumName}</div></div>
-            <div className="infoRow"><div className="infoHeader">Artist(s):</div><div>{addAlbum.artists}</div></div>
+            <div className="infoRow"><div className="infoHeader">Artist(s):</div><div>{addAlbum.artists.map((artist, index) => `${artist}${(index !== addAlbum.artists.length - 1) ? `,` : ``} `)}</div></div>
             <div className="infoRow"><div className="infoHeader">Release Year:</div><div>{addAlbum.releaseYear}</div></div>
-            <div className="infoRow"><div className="infoHeader">Genre(s):</div><div>{addAlbum.genres}</div></div>
           </div> 
         </div> : <div/>
       }
@@ -248,7 +245,6 @@ const Main = (props) => {
             <div className="infoRow"><div className="infoHeader">Album Name:</div><div>{albumInfo.albumName}</div></div>
             <div className="infoRow"><div className="infoHeader">Artist(s):</div><div>{albumInfo.artists}</div></div>
             <div className="infoRow"><div className="infoHeader">Release Year:</div><div>{albumInfo.releaseYear}</div></div>
-            <div className="infoRow"><div className="infoHeader">Genre(s):</div><div>{albumInfo.genres}</div></div>
           </div>
         </div> : <div/>
       }
@@ -262,8 +258,7 @@ const Main = (props) => {
             <Tr>
               <Th outline="1px solid white" color='white'>Album ID</Th>
               <Th outline="1px solid white" color='white'>Album Name</Th>
-              <Th outline="1px solid white" color='white'>Artist</Th>
-              <Th outline="1px solid white" color='white'>Genre(s)</Th>
+              <Th outline="1px solid white" color='white'>Artist(s)</Th>
               <Th outline="1px solid white" color='white' isNumeric>Release Year</Th>
             </Tr>
           </Thead>
@@ -278,10 +273,7 @@ const Main = (props) => {
                   {item.label}
                 </Td>
                 <Td outline="1px solid white">
-                  {item.artists}
-                </Td>
-                <Td outline="1px solid white">
-                  {item.genres}
+                  {item.artists.map((artist, index) => `${artist}${(index !== item.artists.length - 1) ? `, ` : ``}`)}
                 </Td>
                 <Td outline="1px solid white" isNumeric>
                   {item.releaseYear}
@@ -294,8 +286,7 @@ const Main = (props) => {
             <Tr>
               <Th outline="1px solid white" color='white'>Album ID</Th>
               <Th outline="1px solid white" color='white'>Album Name</Th>
-              <Th outline="1px solid white" color='white'>Artist</Th>
-              <Th outline="1px solid white" color='white'>Genre(s)</Th>
+              <Th outline="1px solid white" color='white'>Artist(s)</Th>
               <Th outline="1px solid white" color='white' isNumeric>Release Year</Th>
             </Tr>
           </Tfoot>
