@@ -45,7 +45,7 @@ const Main = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(process.env.REACT_APP_ClientID + ':' + process.env.REACT_APP_ClientSecret)
+        'Authorization': 'Basic ' + btoa(process.env.REACT_APP_SpotifyClientID + ':' + process.env.REACT_APP_SpotifyClientSecret)
       },
       data: 'grant_type=client_credentials'
     }).then(tokenResponse => {
@@ -239,7 +239,7 @@ const Main = (props) => {
           <div className="subtitle">
             Game to be removed from AlbumleDB:
           </div>
-          <img src={(selectAlbumID) ? `http://localhost:5000/albums/art?id=${selectAlbumID}&guessNum=6` : ``} style={{marginTop:20}} />
+          <img src={albumInfo.albumArt} style={{marginTop:20}} />
           <div className="albumInfo">
             <div className="infoRow"><div className="infoHeader">Album ID:</div><div>{albumInfo.albumID}</div></div>
             <div className="infoRow"><div className="infoHeader">Album Name:</div><div>{albumInfo.albumName}</div></div>
